@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id             String                 @id @default(auto()) @map("_id") @db.ObjectId
+  slug           String                 @unique
+  title          String
+  mainImage      String
+  price          Int                    @default(0)
+  rating         Int                    @default(0)
+  description    String
+  manufacturer   String
+  inStock        Int                    @default(1)
+  categoryId     String?                @db.ObjectId
+  category       Category?              @relation(fields: [categoryId], references: [id])
+  customerOrders CustomerOrderProduct[]
+  Wishlist       Wishlist[]
+}
+
+model Image {
+  imageID   String @id @default(auto()) @map("_id") @db.ObjectId
+  productID String // No foreign key, just storing reference manually
+  image     String
+}
+
+model User {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  email    String     @unique
+  password String?
+  role     String?    @default("user")
+  Wishlist Wishlist[]
+}
+
+model Customer_order {
+  id               String                 @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  lastname         String
+  phone            String
+  email            String
+  company          String
+  addrress         String
+  apartment        String
+  postalCode       String
+  dateTime         DateTime               @default(now()) // Store as timestamp string
+  status           String
+  city             String
+  country          String
+  orderNotice      String
+  total            Int
+  products         Json // Embedded order items
+  customerProducts CustomerOrderProduct[]
+}
+
+model Category {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String    @unique
+  Product Product[]
+}
+
+model CustomerOrderProduct {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId // MongoDB uses ObjectId, Prisma automatically handles it
+  customerOrderId String @db.ObjectId // Storing reference ID as String
+  productId       String @db.ObjectId // Storing reference ID as String
+  quantity        Int
+
+  // MongoDB does not enforce relational constraints, but we can reference manually
+  customerOrder Customer_order @relation(fields: [customerOrderId], references: [id])
+  product       Product        @relation(fields: [productId], references: [id])
+}
+
+model Wishlist {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId // MongoDB handles ObjectId automatically
+  productId String @db.ObjectId // Storing reference ID as String
+  userId    String @db.ObjectId // Storing reference ID as String
+
+  // MongoDB does not enforce relations, but references can be managed manually
+  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}

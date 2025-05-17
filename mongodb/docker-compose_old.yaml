@@ -1,0 +1,78 @@
+version: "3.8"
+
+services:
+  mongo1:
+    image: mongo
+    container_name: mongo1
+    volumes:
+      - /home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/keyfile:/data/keyfile
+      - mongo1_data:/data/db
+    command: ["mongod", "--replSet", "rs0", "--keyFile", "/data/keyfile/mongo-keyfile"]
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - mongo-cluster
+
+  mongo2:
+    image: mongo
+    container_name: mongo2
+    volumes:
+      - /home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/keyfile:/data/keyfile
+      - mongo1_data:/data/db
+    command: ["mongod", "--replSet", "rs0", "--keyFile", "/data/keyfile/mongo-keyfile"]
+    restart: always
+    ports:
+      - 27018:27017
+    networks:
+      - mongo-cluster
+
+  mongo3:
+    image: mongo
+    container_name: mongo3
+    volumes:
+      - /home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/keyfile:/data/keyfile
+      - mongo1_data:/data/db
+    command: ["mongod", "--replSet", "rs0", "--keyFile", "/data/keyfile/mongo-keyfile"]
+    restart: always
+    ports:
+      - 27019:27017
+    networks:
+      - mongo-cluster
+
+  mongo-init:
+    image: mongo
+    container_name: mongo-init
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && /scripts/init-replica.sh"]
+    volumes:
+      - /home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/keyfile:/scripts/
+      - mongo1_data:/data/db
+    networks:
+      - mongo-cluster
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://mongo1:27017/?replicaSet=rs0
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - mongo-cluster
+
+volumes:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+
+networks:
+  mongo-cluster:
+    driver: bridge

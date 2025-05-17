@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-exporter
+  namespace: monitoring
+  labels:
+    app: mongodb-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-exporter
+  template:
+    metadata:
+      labels:
+        app: mongodb-exporter
+    spec:
+      containers:
+      - name: mongodb-exporter
+        image: percona/mongodb_exporter:0.39.0
+        args:
+          - --mongodb.uri=mongodb://mongo-0.mongo-headless.dev.svc.cluster.local:27017/
+        ports:
+        - name: metrics
+          containerPort: 9216
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-exporter
+  namespace: monitoring
+spec:
+  selector:
+    app: mongodb-exporter
+  ports:
+  - protocol: TCP
+    port: 9216
+    targetPort: metrics

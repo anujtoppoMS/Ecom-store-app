@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: frontend-backend-monitor
+  labels:
+    release: prometheus
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: nextjs-app
+  endpoints:
+    - port: "3001"
+      path: "/metrics"
+      interval: 15s
+  namespaceSelector:
+    matchNames:
+      - dev

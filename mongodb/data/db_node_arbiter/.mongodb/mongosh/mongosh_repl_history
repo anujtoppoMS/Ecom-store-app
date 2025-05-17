@@ -1,0 +1,24 @@
+exit
+})
+  roles: [{ role: "root", db: "admin" }]
+  pwd: "secure_password",
+  user: "mdb_admin",
+use admin
+exit
+clear
+use admin
+})
+  roles: [{ role: "root", db: "admin" }]
+  pwd: "secure_password",
+  user: "mdb_admin",
+db.getUsers()
+db.runCommand({ connectionStatus: 1 })
+exit
+use admin
+exit
+db.getUser("mdb_admin")
+db.getUser("<your-username>")
+rs.addArb("mongo_node_arbiter")
+rs.conf()
+rs.status()
+use admin

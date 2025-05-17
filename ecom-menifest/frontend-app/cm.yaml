@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-cm
+data:
+  .env: |
+      export NEXTAUTH_URL="http://backend-api:3000"
+      export NEXTAUTH_SECRET="4kqUFeZW/A4aWghMT5M3nFevEQQQYnJ5C5k7qCqkGYU="
+      export NEXT_PUBLIC_API_URL="http://backend-api:3000"
+      export PORT="3001"

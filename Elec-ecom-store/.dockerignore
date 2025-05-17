@@ -1,0 +1,8 @@
+server
+node_modules
+.gitignore
+Dockerfile
+README.md
+prisma
+.github
+.env

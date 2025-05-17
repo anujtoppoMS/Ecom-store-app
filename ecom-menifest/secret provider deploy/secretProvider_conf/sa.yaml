@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2025-02-14T05:44:07Z"
+  name: default
+  annotations:
+    azure.workload.identity/client-id: "350af245-0cc2-45b7-9634-13dcf1ae83b6"
+  labels:
+    azure.workload.identity/use: "true"

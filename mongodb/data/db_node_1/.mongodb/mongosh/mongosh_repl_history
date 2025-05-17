@@ -1,0 +1,118 @@
+exit
+use admin
+us admin
+exit
+use admin
+});
+  ]
+    }
+      arbiterOnly: true 
+      "host": "170.17.5.7:27017", 
+      "_id": 2, 
+    { 
+    }, 
+      "host": "170.17.5.6:27017", 
+      "_id": 1, 
+    { 
+    }, 
+      "host": "170.17.5.5:27017", 
+      "_id": 0, 
+    { 
+  "members": [
+  "writeConcernMajorityJournalDefault": true, 
+  "version": 1, 
+  "_id": "my_mdb_rs", 
+rs.initiate({
+use admin
+us adminn
+exit
+rs.status()
+use admin
+rs.status()
+exit
+db.createCollection("Wishlist")
+db.createCollection("CustomerOrderProduct")
+db.createCollection("Category")
+db.createCollection("Customer_order")
+db.createCollection("User")
+db.createCollection("Image")
+db.createCollection("Product")
+db.Wishlist.createIndex({ userId: 1, productId: 1 }, { unique: true })
+db.CustomerOrderProduct.createIndex({ productId: 1 })
+db.CustomerOrderProduct.createIndex({ customerOrderId: 1 })
+db.Customer_order.createIndex({ email: 1 })
+db.Customer_order.createIndex({ dateTime: 1 })
+db.Product.createIndex({ categoryId: 1 })
+db.Product.createIndex({ slug: 1 }, { unique: true })
+use admin
+us admin
+exit
+});
+  ]
+    { role: "clusterAdmin",  db: "admin" }
+    { role: "readWriteAnyDatabase", db:"admin" }, 
+    { role: "dbAdminAnyDatabase", db: "admin" }, 
+    { role: "userAdminAnyDatabase", db: "admin" }, 
+    {role: "root", db: "admin"},
+  roles: [
+  pwd: "mdb_pass",
+  user: "mdb_admin",
+});
+  ]
+    }
+      arbiterOnly: true 
+      "host": "170.17.5.7:27017", 
+      "_id": 2, 
+    { 
+    }, 
+      "host": "170.17.5.6:27017", 
+      "_id": 1, 
+    { 
+    }, 
+      "host": "170.17.5.5:27017", 
+      "_id": 0, 
+    { 
+  "members": [
+  "writeConcernMajorityJournalDefault": true, 
+  "version": 1, 
+  "_id": "my_mdb_rs", 
+rs.initiate({
+rs.status()
+clear
+use admin
+us admin
+rs.status()
+exit
+db.Wishlist.createIndex({ userId: 1, productId: 1 }, { unique: true })
+db.CustomerOrderProduct.createIndex({ productId: 1 })
+db.CustomerOrderProduct.createIndex({ customerOrderId: 1 })
+db.Customer_order.createIndex({ email: 1 })
+db.Customer_order.createIndex({ dateTime: 1 })
+db.Product.createIndex({ categoryId: 1 })
+db.Product.createIndex({ slug: 1 }, { unique: true })
+db.runCommand({ connectionStatus: 1 });
+use ecommerce-db
+db.runCommand({ connectionStatus: 1 });
+use admin
+exit
+});
+  ]
+    }
+      arbiterOnly: true 
+      "host": "170.17.5.7:27017", 
+      "_id": 2, 
+    { 
+    }, 
+      "host": "170.17.5.6:27017", 
+      "_id": 1, 
+    { 
+    }, 
+      "host": "170.17.5.5:27017", 
+      "_id": 0, 
+    { 
+  "members": [
+  "writeConcernMajorityJournalDefault": true, 
+  "version": 1, 
+  "_id": "my_mdb_rs", 
+rs.initiate({
+use admin

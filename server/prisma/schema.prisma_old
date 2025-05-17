@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String  @unique
+  title       String
+  mainImage   String
+  price       Int     @default(0)
+  rating      Int     @default(0)
+  description String
+  manufacturer String
+  inStock     Int     @default(1)
+  categoryId  String?
+}
+
+model Image {
+  imageID   String  @id @default(auto()) @map("_id") @db.ObjectId
+  productID String // No foreign key, just storing reference manually
+  image     String
+}
+
+model User {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  password String?
+  role     String? @default("user")
+}
+
+model Customer_order {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String
+  total    Int
+  dateTime DateTime @default(now()) // Store as timestamp string
+  products Json // Embedded order items
+}
+
+model Category {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String  @unique
+}

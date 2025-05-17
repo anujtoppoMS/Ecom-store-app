@@ -1,0 +1,88 @@
+services:
+  # The container mongo_node_1 configurations #############
+  mongo_node_1:
+    container_name: mongo_node_1
+    hostname: mongo_node_1
+    image: "mongo"
+    ports:
+      - "27016:27017"
+    volumes:
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/data/db_node_1:/data/db"
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/ssl/node_1:/data/ssl"
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/config:/data/config"
+    restart: always
+    entrypoint: ["/usr/bin/mongod", "--config", "/data/config/cluster.conf"]
+    networks:
+      my_network:
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mdb_admin
+      MONGO_INITDB_ROOT_PASSWORD: mdb_pass
+  mongo_node_2:
+    container_name: mongo_node_2
+    hostname: mongo_node_2
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    volumes:
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/data/db_node_2:/data/db"
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/ssl/node_2:/data/ssl"
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/config:/data/config"
+    restart: always
+
+    entrypoint: ["/usr/bin/mongod", "--config", "/data/config/cluster.conf"]
+    networks:
+      my_network:
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mdb_admin
+      MONGO_INITDB_ROOT_PASSWORD: mdb_pass
+  mongo_node_arbiter:
+    container_name: mongo_node_arbiter
+    hostname: mongo_node_arbiter
+    image: "mongo"
+    ports:
+      - "27018:27017"
+    volumes:
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/data/db_node_arbiter:/data/db"
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/ssl/node_arbiter:/data/ssl"
+      - "/home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/config:/data/config"
+    restart: always
+    entrypoint: ["/usr/bin/mongod", "--config", "/data/config/cluster.conf"]
+    networks:
+      my_network:
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mdb_admin
+      MONGO_INITDB_ROOT_PASSWORD: mdb_pass
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mdb_admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mdb_pass
+      ME_CONFIG_MONGODB_PORT: "27017"
+      ME_CONFIG_MONGODB_AUTH_DATABASE: "admin"
+      ME_CONFIG_MONGODB_AUTH_USERNAME: "mdb_admin"
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: "mdb_pass"
+      ME_CONFIG_MONGODB_URL: mongodb://db_node_1:27016/admin?replicaSet=my_mdb_rs&tls=true
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_CA_FILE: "/etc/certificates/mdb_root_CA.crt"
+      ME_CONFIG_MONGODB_CERT_FILE: "/etc/certificates/mdb_client.pem"
+      ME_CONFIG_MONGODB_KEY_FILE: "/etc/certificates/mdb_client.key"
+      ME_CONFIG_MONGODB_SSL_PASS: "mdb_my_custom_passphrase_security"
+    volumes:
+      - /home/sheelu/react-nodejs-ecommerce-app/Electronics-eCommerce-Shop/mongodb/ssl/serverclient:/etc/certificates:ro
+    networks:
+      my_network:
+networks:
+  my_network:
+    name: my_network_default

@@ -1,0 +1,8 @@
+FROM mongo:latest
+
+# Copy configuration and SSL files
+COPY config/cluster.conf /data/config/
+COPY ssl/ /data/ssl/
+
+# Define the entrypoint
+ENTRYPOINT ["/usr/bin/mongod", "--config", "/data/config/cluster.conf"]

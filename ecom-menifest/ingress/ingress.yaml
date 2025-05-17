@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # annotations:
+  #   # nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+  #   nginx.ingress.kubernetes.io/proxy-body-size: 16m
+  #   nginx.ingress.kubernetes.io/proxy-buffer-size: 16k
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    # prometheus.io/path: /metrics
+    # prometheus.io/scrape: "true"
+  name: ecom-ingress
+  namespace: dev
+spec:
+  ingressClassName: nginx-ecom
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: nginx-service
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
